@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-tw">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>農村小吃(進階版)</title>
+  <link rel="shortcut icon" href="images/favicon.ico">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="style/index.css">
+</head>
+
+<body>
+  <div class="wrapper container mx-auto">
+    <div class="loading js-hidden" id="Loading">
+      <div class="loading__loader"></div>
+      <div class="loading__message">資料下載中...請稍後</div>
+    </div>
+    <header>
+       <h1 class="pagetitle text-center">農村地方美食小吃特色料理</h1>
+    </header>
+    <div class="container__row">
+      <main class="tf tf--list" id="TfMain">
+        <div class="tf__col tf__col--header mx-auto tf__ctrl">
+          <div class="tf__filter">
+            <select class="tf__select" id="TfCounty" name="county">
+              <option value="none">請選擇行政區域...</option>
+            </select>
+            <select class="tf__select" id="TfTownship" name="township">
+              <option value="none">請選擇鄉鎮區</option>
+            </select>
+          </div>
+          <div class="tf__view" id="TfView">
+            <span class="text-secondary">檢視模式：</span>
+            <input class="tf__radio" type="radio" name="viewmode" id="TfViewList" value="0" checked>
+            <label class="material-icons tf__mode tf__mode--active" for="TfViewList">
+              view_list
+            </label>
+            <input class="tf__radio" type="radio" name="viewmode" id="TfViewTable" value="1">
+            <label class="material-icons tf__mode" for="TfViewTable">
+              reorder
+            </label>
+            <input class="tf__radio" type="radio" name="viewmode" id="TfViewCard" value="2">
+            <label class="material-icons tf__mode" for="TfViewCard">
+              view_module
+            </label>
+          </div>
+        </div>
+        <div class="tf__col tf__col--main" id="TfBody">
+        </div>
+        <div class="tf__col tf__col--footer">
+          <span class="tf__page">美食頁次
+            <span class="tf__pageNubmer" id="TfPageNumber">1</span>
+            /
+            <span class="tf__pageNubmer" id="TfTotalPage">1</span>
+          </span>
+          <ul class="tf__pagination js-hidden" id="Pagination">
+          </ul>
+        </div>
+      </main>
+      <aside class="ad">
+        <div class="ad__group">
+          <div class="ad__item"><img src="images/adv1.png" alt="Ad Google Pixel4"></div>
+          <div class="ad__item"><img src="images/adv2.png" alt="Ad LiTV"></div>
+          <div class="ad__item" id="StickyAd"><img src="images/adv3.png" alt="Ad Forest House"></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+  <footer class="container container--footer">
+    <div class="footer wrapper mx-auto">
+      <div class="footer__head">CMoney 全曜財經資訊</div>
+      <div class="footer__body">資料來源 : <span class="text-white">政府資料開放平台</span></div>
+    </div>
+  </footer>
+  <script src="js/index.js"></script>
+</body>
+
+</html>
