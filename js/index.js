@@ -239,7 +239,7 @@ class TravelFood {
     const domStickyAd = vm.domStickyAd;
     const stickyOffset = vm.domStickyAd.offsetTop;
     const stickyAdWidth= domStickyAd.clientWidth;
-    window.onscroll = function () {
+    window.addEventListener('scroll', ()=>{
       if (window.innerWidth > mobileWidth) {
         if (window.pageYOffset >= stickyOffset) {
           domStickyAd.classList.add('js-sticky');
@@ -248,8 +248,8 @@ class TravelFood {
           domStickyAd.classList.remove('js-sticky');
         }
       };
-    };
-
+      }
+    );
   }
 
   /**
