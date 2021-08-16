@@ -125,6 +125,10 @@ body {
   line-height: 24px;
 }
 
+.tf__desc br{
+  display:none;
+}
+
 .tf__imgcntr {
   position: relative;
 }
