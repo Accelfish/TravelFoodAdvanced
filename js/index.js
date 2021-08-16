@@ -23,7 +23,7 @@ class TravelFood {
   init() {
     this.loading = document.querySelector('#Loading');
     this.pagination = document.querySelector('#Pagination');
-    this.viewMode = document.querySelector('#TfView');
+    this.tfView = document.querySelector('#TfView');
     this.county = document.querySelector('#TfCounty');
     this.township = document.querySelector('#TfTownship');
     this.travelFoodBody = document.querySelector('#TfBody');
@@ -38,7 +38,7 @@ class TravelFood {
    * 取得檢視模式
    * @returns 檢視模式
    */
-  getViewMode() {
+  get viewMode() {
     return this.pageObject._viewMode;
   }
 
@@ -46,7 +46,7 @@ class TravelFood {
    * 取得行政區域與鄉鎮
    * @returns 行政區域與鄉鎮
    */
-  getCountyData() {
+  get countyData() {
     return this.pageObject._countyData;
   }
 
@@ -54,7 +54,7 @@ class TravelFood {
    * 取得總頁數
    * @returns 總頁數
    */
-  getTotalPage() {
+  get totalPage() {
     return this.pageObject._totalPage;
   }
 
@@ -62,7 +62,7 @@ class TravelFood {
    * 取得目前頁碼
    * @returns 目前的頁碼
    */
-  getCurrentPage() {
+  get currentPage() {
     return this.pageObject._currentPage;
   }
 
@@ -70,7 +70,7 @@ class TravelFood {
    * 取得每頁的資料數
    * @returns 每頁的資料筆數
    */
-  getPageSize() {
+  get pageSize() {
     return this.pageObject._pageSize;
   }
 
@@ -78,7 +78,7 @@ class TravelFood {
    * 取得已儲存的小吃資料
    * @returns 已儲存的小吃資料
    */
-  getTravelFoodData() {
+  get travelFoodData() {
     return this.pageObject._travelFood;
   }
 
@@ -86,7 +86,7 @@ class TravelFood {
    * 設定目前頁碼
    * @param {number} targetPage
    */
-  setCurrentPage(targetPage) {
+  set currentPage(targetPage) {
     this.pageObject._currentPage = targetPage;
   }
 
@@ -94,7 +94,7 @@ class TravelFood {
    * 設定總頁數
    * @param {number}} value
    */
-  setTotalPage(value) {
+  set totalPage(value) {
     this.pageObject._totalPage = value;
   }
 
@@ -102,14 +102,14 @@ class TravelFood {
    * 儲存的小吃資料
    * @param {object} value
    */
-  setTravelFood(value) {
+  set travelFood(value) {
     this.pageObject._travelFood = value;
   }
 
   /**
    * 設定檢視模式
    */
-  setViewMode(value) {
+  set viewMode(value) {
     this.pageObject._viewMode = value;
   }
 
@@ -117,7 +117,7 @@ class TravelFood {
    * 儲存鄉鎮的資料
    * @param {object} value
    */
-  setCountyData(value) {
+  set countyData(value) {
     this.pageObject._countyData = value;
   }
 
@@ -125,11 +125,11 @@ class TravelFood {
    * 變更檢視模式
    * @param {enumViewMode} viewMode 
    */
-  changeViewMode(viewMode){
+  changeViewMode(viewMode) {
     let vm = this;
-    const viewmodeDOM = vm.viewMode;
+    const viewmodeDOM = vm.tfView;
     const mainContainerDOM = vm.mainCntr;
-    
+
     switch (viewMode) {
       case enumViewMode.list:
         mainContainerDOM.classList = 'tf tf--list';
@@ -144,10 +144,10 @@ class TravelFood {
         mainContainerDOM.classList = 'tf tf--list';
         break;
     }
-
+    
     viewmodeDOM.querySelector('.tf__mode--active').classList.remove('tf__mode--active');
     viewmodeDOM.querySelectorAll('.tf__mode')[viewMode].classList.add('tf__mode--active');
-    vm.setViewMode(viewMode);
+    vm.viewMode = viewMode;
 
   }
 
@@ -156,12 +156,12 @@ class TravelFood {
    */
   setViewModeChangeEvent() {
     let vm = this;
-    const viewmodeDOM = vm.viewMode;
+    const viewmodeDOM = vm.tfView;
     viewmodeDOM.addEventListener('click', (e) => {
       if (e.target.nodeName === 'INPUT') {
         let targetViewMode = parseInt(e.target.value, 10);
-        if(!isNaN(targetViewMode)){
-          let currentViewMode = vm.getViewMode();
+        if (!isNaN(targetViewMode)) {
+          let currentViewMode = vm.viewMode;
           if (targetViewMode !== currentViewMode) {
             vm.changeViewMode(targetViewMode);
             vm.renderData();
@@ -175,10 +175,10 @@ class TravelFood {
    * 顯示與設定目前頁碼
    * @param {number} targetPage 
    */
-  renderPageNumber(targetPage){
-    let vm=this;
+  renderPageNumber(targetPage) {
+    let vm = this;
     vm.pageNumber.textContent = targetPage;
-    vm.setCurrentPage(targetPage);
+    vm.currentPage = targetPage;
   }
 
   /**
@@ -187,11 +187,11 @@ class TravelFood {
   setPageItemEvent() {
     let vm = this;
     const paginationDOM = vm.pagination;
-    const mainContainerDOM= vm.mainCntr;
+    const mainContainerDOM = vm.mainCntr;
 
     paginationDOM.addEventListener('click', (e) => {
       if (e.target.nodeName === 'LI') {
-        let currentPage = vm.getCurrentPage();
+        let currentPage = vm.currentPage;
         let targetPage = parseInt(e.target.dataset.pageNumber, 10);
         if (targetPage && targetPage !== currentPage) {
           paginationDOM.querySelector('.js-tf__pageItem').classList.remove('js-tf__pageItem');
@@ -240,13 +240,13 @@ class TravelFood {
     const stickyOffset = vm.stickyAd.offsetTop;
 
     window.onscroll = function () {
-        if (window.innerWidth > mobileWidth) {
-          if (window.pageYOffset >= stickyOffset) {
-            stickyAd.classList.add("js-sticky");
-          } else {
-            stickyAd.classList.remove("js-sticky");
-          }
-        };
+      if (window.innerWidth > mobileWidth) {
+        if (window.pageYOffset >= stickyOffset) {
+          stickyAd.classList.add("js-sticky");
+        } else {
+          stickyAd.classList.remove("js-sticky");
+        }
+      };
     };
 
   }
@@ -257,7 +257,7 @@ class TravelFood {
   renderCountyFilter() {
     let vm = this;
     let countySelect = vm.county;
-    let countyData = vm.getCountyData();
+    let countyData = vm.countyData;
     Object.keys(countyData).forEach(county => {
       let countyOption = document.createElement('option');
       countyOption.value = county;
@@ -272,7 +272,7 @@ class TravelFood {
   renderTownshipFilter() {
     let vm = this;
     let townshipSelect = vm.township;
-    let countyData = vm.getCountyData();
+    let countyData = vm.countyData();
     let currentCounty = vm.county.value;
     townshipSelect.innerHTML = '<option value="none">請選擇鄉鎮區</option>';
     if (currentCounty != 'none') {
@@ -288,9 +288,9 @@ class TravelFood {
   renderPagination(showfoodData) {
     let vm = this;
     let template = '';
-    let currentPage = vm.getCurrentPage();
+    let currentPage = vm.currentPage;
     let totalPage = showfoodData.length;
-    vm.setTotalPage(totalPage);
+    vm.totalPage = totalPage;
 
     for (let i = 1; i <= totalPage; i += 1) {
       if (i === currentPage) {
@@ -312,7 +312,7 @@ class TravelFood {
    */
   sortData(travelFoodData) {
     let vm = this;
-    let pageSize = vm.getPageSize();
+    let pageSize = vm.pageSize;
     let sortArr = [];
     travelFoodData.forEach((foodData, index) => {
       if (index === 0) {
@@ -332,10 +332,10 @@ class TravelFood {
    * @returns 目前頁面卡片的HTML
    */
   renderCard(showFoodData, currentPage) {
-     let cardTemplate = `<div class="tf__card">`;
-     
-     showFoodData[currentPage].forEach((foodData) => {
-        cardTemplate += `<div class="card">
+    let cardTemplate = `<div class="tf__card">`;
+
+    showFoodData[currentPage].forEach((foodData) => {
+      cardTemplate += `<div class="card">
               <figure class="card__head">
                 <img class="card__image tf__image"
                   src = "${foodData.PicURL}"
@@ -356,11 +356,11 @@ class TravelFood {
                 </div>
                </div>
             </div>`
-      });
+    });
 
-      cardTemplate+=`</div>`;
+    cardTemplate += `</div>`;
 
-     return cardTemplate;
+    return cardTemplate;
   }
 
   /**
@@ -370,11 +370,11 @@ class TravelFood {
    * @returns 目前頁面清單的HTML
    */
   renderList(showFoodData, currentPage) {
-    let limitDescLength=100;
+    let limitDescLength = 100;
     let listTemplate = `<ul class = "tf__list">`;
 
     showFoodData[currentPage].forEach((foodData, index) => {
-      listTemplate+=`<li class="tf__item">
+      listTemplate += `<li class="tf__item">
           <div class="tf__head inner__tag">
             <div class="tf__tag tf__tag-info">${foodData.City}</div>
             <div class="tf__tag tf__tag-secondary tf__tag-resp">${foodData.Town}</div>
@@ -425,8 +425,8 @@ class TravelFood {
    */
   renderTable(showFoodData, currentPage) {
     let vm = this;
-    let pageSize = vm.getPageSize();
-    
+    let pageSize = vm.pageSize;
+
     let tableTemplate = `
     <table class="tf__table" >
        <thead class="tf__head" >
@@ -469,21 +469,21 @@ class TravelFood {
   renderData() {
     let vm = this;
     let template = '';
-    let mode = vm.getViewMode();
-    let currentPage = vm.getCurrentPage() - 1;
-    let filterData = vm.getTravelFoodData();
-    
+    let mode = vm.viewMode;
+    let currentPage = vm.currentPage - 1;
+    let filterData = vm.travelFoodData;
+
     //篩選
-    if(vm.county.value != 'none'){
+    if (vm.county.value != 'none') {
       filterData = filterData.filter(item => item.City == vm.county.value);
-      if(vm.township.value != 'none'){
+      if (vm.township.value != 'none') {
         filterData = filterData.filter(item => item.Town == vm.township.value)
       };
     }
-    
+
     let showFoodData = vm.sortData(filterData);
     vm.renderPagination(showFoodData);
-  
+
     switch (mode) {
       case enumViewMode.list:
         template = vm.renderList(showFoodData, currentPage);
@@ -518,7 +518,7 @@ class TravelFood {
         }
       }
     })
-    vm.setCountyData(countyData);
+    vm.countyData = countyData;
     vm.renderCountyFilter();
   }
 
@@ -531,7 +531,7 @@ class TravelFood {
     fetch('https://data.coa.gov.tw/Service/OpenData/ODwsv/ODwsvTravelFood.aspx')
       .then((response) => response.json())
       .then((foodData) => {
-        vm.setTravelFood(foodData);
+        vm.travelFood = foodData;
         vm.formatCounty(foodData);
         vm.setCountyChangeEvent();
         vm.renderPageNumber(1); //取完資料設定第一頁
