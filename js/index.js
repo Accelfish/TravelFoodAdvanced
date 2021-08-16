@@ -285,15 +285,15 @@ class TravelFood {
 
   /**
    * 渲染頁碼
+   * @param {number} showfoodDataLength 總頁數
    */
-  renderPagination(showfoodData) {
+  renderPagination(showfoodDataLength) {
     let vm = this;
     let template = '';
     let currentPage = vm.currentPage;
-    let totalPage = showfoodData.length;
-    vm.totalPage = totalPage;
+    vm.totalPage = showfoodDataLength;
 
-    for (let i = 1; i <= totalPage; i += 1) {
+    for (let i = 1; i <= showfoodDataLength; i += 1) {
       if (i === currentPage) {
         template += `<li class="text-center tf__pageItem js-tf__pageItem" data-page-number="${i}">${i}</li>`;
       } else {
@@ -301,7 +301,7 @@ class TravelFood {
       }
     }
 
-    vm.domTotalPageNumber.textContent = totalPage;
+    vm.domTotalPageNumber.textContent = showfoodDataLength;
     vm.domPagination.innerHTML = template;
     vm.domPageItems = vm.domPagination.querySelectorAll('.tf__pageItem');
 
@@ -483,7 +483,7 @@ class TravelFood {
     }
 
     let showFoodData = vm.sortData(filterData);
-    vm.renderPagination(showFoodData);
+    vm.renderPagination(showFoodData.length);
 
     switch (mode) {
       case enumViewMode.list:
