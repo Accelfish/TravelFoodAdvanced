@@ -21,16 +21,16 @@ class TravelFood {
   }
 
   init() {
-    this.loading = document.querySelector('#Loading');
-    this.pagination = document.querySelector('#Pagination');
-    this.tfView = document.querySelector('#TfView');
-    this.county = document.querySelector('#TfCounty');
-    this.township = document.querySelector('#TfTownship');
-    this.travelFoodBody = document.querySelector('#TfBody');
-    this.pageNumber = document.querySelector('#TfPageNumber');
-    this.totalPageNumber = document.querySelector('#TfTotalPage');
-    this.mainCntr = document.querySelector('#TfMain');
-    this.stickyAd = document.querySelector('#StickyAd');
+    this.domLoading = document.querySelector('#Loading');
+    this.domPagination = document.querySelector('#Pagination');
+    this.domViewMode = document.querySelector('#TfView');
+    this.domCounty = document.querySelector('#TfCounty');
+    this.domTownship = document.querySelector('#TfTownship');
+    this.domTravelFoodBody = document.querySelector('#TfBody');
+    this.domPageNumber = document.querySelector('#TfPageNumber');
+    this.domTotalPageNumber = document.querySelector('#TfTotalPage');
+    this.domMainCntr = document.querySelector('#TfMain');
+    this.domStickyAd = document.querySelector('#StickyAd');
     this.callTravelFoodData();
   }
 
@@ -127,26 +127,26 @@ class TravelFood {
    */
   changeViewMode(viewMode) {
     let vm = this;
-    const viewmodeDOM = vm.tfView;
-    const mainContainerDOM = vm.mainCntr;
+    const domViewmode = vm.domViewMode;
+    const domMainContainer = vm.domMainCntr;
 
     switch (viewMode) {
       case enumViewMode.list:
-        mainContainerDOM.classList = 'tf tf--list';
+        domMainContainer.classList = 'tf tf--list';
         break;
       case enumViewMode.table:
-        mainContainerDOM.classList = 'tf tf--table';
+        domMainContainer.classList = 'tf tf--table';
         break;
       case enumViewMode.card:
-        mainContainerDOM.classList = 'tf tf--card';
+        domMainContainer.classList = 'tf tf--card';
         break;
       default:
-        mainContainerDOM.classList = 'tf tf--list';
+        domMainContainer.classList = 'tf tf--list';
         break;
     }
     
-    viewmodeDOM.querySelector('.tf__mode--active').classList.remove('tf__mode--active');
-    viewmodeDOM.querySelectorAll('.tf__mode')[viewMode].classList.add('tf__mode--active');
+    domViewmode.querySelector('.tf__mode--active').classList.remove('tf__mode--active');
+    domViewmode.querySelectorAll('.tf__mode')[viewMode].classList.add('tf__mode--active');
     vm.viewMode = viewMode;
 
   }
@@ -156,8 +156,8 @@ class TravelFood {
    */
   setViewModeChangeEvent() {
     let vm = this;
-    const viewmodeDOM = vm.tfView;
-    viewmodeDOM.addEventListener('click', (e) => {
+    const domViewmode = vm.domViewMode;
+    domViewmode.addEventListener('click', (e) => {
       if (e.target.nodeName === 'INPUT') {
         let targetViewMode = parseInt(e.target.value, 10);
         if (!isNaN(targetViewMode)) {
@@ -177,7 +177,7 @@ class TravelFood {
    */
   renderPageNumber(targetPage) {
     let vm = this;
-    vm.pageNumber.textContent = targetPage;
+    vm.domPageNumber.textContent = targetPage;
     vm.currentPage = targetPage;
   }
 
@@ -186,19 +186,19 @@ class TravelFood {
    */
   setPageItemEvent() {
     let vm = this;
-    const paginationDOM = vm.pagination;
-    const mainContainerDOM = vm.mainCntr;
-
-    paginationDOM.addEventListener('click', (e) => {
+    const domPagination = vm.domPagination;
+    const domMainContainer = vm.domMainCntr;
+    
+    domPagination.addEventListener('click', (e) => {
       if (e.target.nodeName === 'LI') {
         let currentPage = vm.currentPage;
         let targetPage = parseInt(e.target.dataset.pageNumber, 10);
         if (targetPage && targetPage !== currentPage) {
-          paginationDOM.querySelector('.js-tf__pageItem').classList.remove('js-tf__pageItem');
+          domPagination.querySelector('.js-tf__pageItem').classList.remove('js-tf__pageItem');
           e.target.classList.add('js-tf__pageItem');
           vm.renderPageNumber(targetPage);
           vm.renderData();
-          mainContainerDOM.scrollIntoView();
+          domMainContainer.scrollIntoView();
         }
       }
     })
@@ -209,8 +209,8 @@ class TravelFood {
    */
   setCountyChangeEvent() {
     let vm = this;
-    let countySelect = vm.county;
-    countySelect.addEventListener('change', (e) => {
+    let domCountySelect = vm.domCounty;
+    domCountySelect.addEventListener('change', (e) => {
       vm.renderPageNumber(1);
       vm.renderTownshipFilter();
       vm.setTownshipChangeEvent();
@@ -223,8 +223,8 @@ class TravelFood {
    */
   setTownshipChangeEvent() {
     let vm = this;
-    let townshipSelect = vm.township;
-    townshipSelect.addEventListener('change', (e) => {
+    let domTownshipSelect = vm.domTownship;
+    domTownshipSelect.addEventListener('change', (e) => {
       vm.renderPageNumber(1);
       vm.renderData();
     })
@@ -236,15 +236,16 @@ class TravelFood {
   setAdStickyEvent() {
     let vm = this;
     const mobileWidth = 414;
-    const stickyAd = vm.stickyAd;
-    const stickyOffset = vm.stickyAd.offsetTop;
-
+    const domStickyAd = vm.domStickyAd;
+    const stickyOffset = vm.domStickyAd.offsetTop;
+    const stickyAdWidth= domStickyAd.clientWidth;
     window.onscroll = function () {
       if (window.innerWidth > mobileWidth) {
         if (window.pageYOffset >= stickyOffset) {
-          stickyAd.classList.add("js-sticky");
+          domStickyAd.classList.add('js-sticky');
+          domStickyAd.style.width = stickyAdWidth + 'px';
         } else {
-          stickyAd.classList.remove("js-sticky");
+          domStickyAd.classList.remove('js-sticky');
         }
       };
     };
@@ -256,13 +257,13 @@ class TravelFood {
    */
   renderCountyFilter() {
     let vm = this;
-    let countySelect = vm.county;
+    let domCountySelect = vm.domCounty;
     let countyData = vm.countyData;
     Object.keys(countyData).forEach(county => {
       let countyOption = document.createElement('option');
       countyOption.value = county;
       countyOption.text = county;
-      countySelect.appendChild(countyOption);
+      domCountySelect.appendChild(countyOption);
     });
   }
 
@@ -271,13 +272,13 @@ class TravelFood {
    */
   renderTownshipFilter() {
     let vm = this;
-    let townshipSelect = vm.township;
-    let countyData = vm.countyData();
-    let currentCounty = vm.county.value;
-    townshipSelect.innerHTML = '<option value="none">請選擇鄉鎮區</option>';
+    let domTownshipSelect = vm.domTownship;
+    let countyData = vm.countyData;
+    let currentCounty = vm.domCounty.value;
+    domTownshipSelect.innerHTML = '<option value="none">請選擇鄉鎮區</option>';
     if (currentCounty != 'none') {
       countyData[currentCounty].forEach(town => {
-        townshipSelect.innerHTML += `<option value="${town}">${town}</option>`
+        domTownshipSelect.innerHTML += `<option value="${town}">${town}</option>`
       })
     }
   }
@@ -300,9 +301,9 @@ class TravelFood {
       }
     }
 
-    vm.totalPageNumber.textContent = totalPage;
-    vm.pagination.innerHTML = template;
-    vm.pageItems = vm.pagination.querySelectorAll('.tf__pageItem');
+    vm.domTotalPageNumber.textContent = totalPage;
+    vm.domPagination.innerHTML = template;
+    vm.domPageItems = vm.domPagination.querySelectorAll('.tf__pageItem');
 
     vm.setPageItemEvent();
   }
@@ -474,10 +475,10 @@ class TravelFood {
     let filterData = vm.travelFoodData;
 
     //篩選
-    if (vm.county.value != 'none') {
-      filterData = filterData.filter(item => item.City == vm.county.value);
-      if (vm.township.value != 'none') {
-        filterData = filterData.filter(item => item.Town == vm.township.value)
+    if (vm.domCounty.value != 'none') {
+      filterData = filterData.filter(item => item.City == vm.domCounty.value);
+      if (vm.domTownship.value != 'none') {
+        filterData = filterData.filter(item => item.Town == vm.domTownship.value)
       };
     }
 
@@ -498,7 +499,7 @@ class TravelFood {
         template = vm.renderList(showFoodData, currentPage);
         break;
     }
-    vm.travelFoodBody.innerHTML = template;
+    vm.domTravelFoodBody.innerHTML = template;
   }
 
   /**
@@ -527,7 +528,7 @@ class TravelFood {
    */
   callTravelFoodData() {
     let vm = this;
-    vm.loading.classList.remove('js-hidden');
+    vm.domLoading.classList.remove('js-hidden');
     fetch('https://data.coa.gov.tw/Service/OpenData/ODwsv/ODwsvTravelFood.aspx')
       .then((response) => response.json())
       .then((foodData) => {
@@ -539,13 +540,13 @@ class TravelFood {
         vm.setViewModeChangeEvent();
         vm.renderData();
         vm.setAdStickyEvent();
-        vm.pagination.classList.remove('js-hidden');
+        vm.domPagination.classList.remove('js-hidden');
       })
       .catch((error) => {
         console.error(error);
       })
       .finally(() => {
-        vm.loading.classList.add('js-hidden');
+        vm.domLoading.classList.add('js-hidden');
       });
   }
 }
